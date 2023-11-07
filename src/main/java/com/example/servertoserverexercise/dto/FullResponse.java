@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +17,7 @@ public class FullResponse {
     private String gender;
     private double genderProbability;
     private double countryProbability;
-    private Object country;
+    private List country = new ArrayList<>();
 
     public FullResponse(GenderResponse gender, AgeResponse age, CountryResponse nationality) {
         this.name = gender.getName();
@@ -22,16 +25,8 @@ public class FullResponse {
         this.genderProbability = gender.getProbability();
         this.age = age.getAge();
         this.ageCount = age.getCount();
-        // Assuming nationality.getCountry() returns a list
-        // Assuming nationality.getCountry() returns a list
-        if (!nationality.getCountry().isEmpty()) {
-            CountryResponse firstCountry = (CountryResponse) nationality.getCountry().get(0);
-            this.country = firstCountry.getCountry_id();
-            this.countryProbability = firstCountry.getProbability();
-        } else {
-            this.country = null;
-            this.countryProbability = 0.0; // Set a default value or handle this case as needed
-        }
+        this.country = nationality.getCountry();
+        this.countryProbability = nationality.getCountryProbability();
     }
 
     @Override
@@ -43,7 +38,7 @@ public class FullResponse {
                 ", gender='" + gender + '\'' +
                 ", genderProbability=" + genderProbability +
                 ", countryProbability=" + countryProbability +
-                ", country='" + country + '\'' +
+                ", country=" + country +
                 '}';
     }
 }
